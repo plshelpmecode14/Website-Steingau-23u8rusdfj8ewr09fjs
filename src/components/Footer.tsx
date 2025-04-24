@@ -75,7 +75,7 @@ export default function Footer({ language }: FooterProps) {
           </p>
           <div className="mb-6">
             {newsletterCategories.map((category) => (
-              <div key={category.id} className="flex items-center mb-3 group">
+              <div key={category.id} className="flex items-center mb-3">
                 <label className="flex items-center cursor-pointer">
                   <input
                     type="checkbox"
@@ -86,8 +86,8 @@ export default function Footer({ language }: FooterProps) {
                   <span className="ml-2">{category.label[language]}</span>
                 </label>
                 <div className="relative ml-2">
-                  <Info className="w-4 h-4 text-gray-400" />
-                  <div className="absolute left-6 top-1/2 -translate-y-1/2 bg-gray-800 text-sm p-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                  <Info className="w-4 h-4 text-gray-400 hover:text-gray-300 peer" />
+                  <div className="absolute left-6 top-1/2 -translate-y-1/2 bg-gray-800 text-sm p-2 rounded opacity-0 peer-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
                     {category.description[language]}
                   </div>
                 </div>
@@ -108,24 +108,28 @@ export default function Footer({ language }: FooterProps) {
           </div>
         </div>
 
-        <div>
+        <div className="flex flex-col">
           <h3 className="text-2xl font-bold mb-6">
             {language === 'de' ? 'Feedback & Vorschläge' : 'Feedback & Suggestions'}
           </h3>
-          <textarea
-            value={feedback}
-            onChange={(e) => setFeedback(e.target.value)}
-            placeholder={
-              language === 'de'
-                ? 'Teilen Sie uns Ihre Gedanken mit...'
-                : 'Share your thoughts with us...'
-            }
-            className="w-full h-32 px-4 py-3 rounded-lg bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
-          />
-          <button className="flex items-center gap-2 bg-blue-500 text-white px-6 py-2 rounded-full hover:bg-blue-600 transition-colors">
-            <Send className="w-5 h-5" />
-            {language === 'de' ? 'Absenden' : 'Send'}
-          </button>
+          <div className="flex flex-col flex-grow">
+            <textarea
+              value={feedback}
+              onChange={(e) => setFeedback(e.target.value)}
+              placeholder={
+                language === 'de'
+                  ? 'Teilen Sie uns Ihre Gedanken mit...'
+                  : 'Share your thoughts with us...'
+              }
+              className="flex-grow px-4 py-3 rounded-lg bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4 min-h-[160px]"
+            />
+            <div>
+              <button className="flex items-center gap-2 bg-blue-500 text-white px-6 py-2 rounded-full hover:bg-blue-600 transition-colors">
+                <Send className="w-5 h-5" />
+                {language === 'de' ? 'Absenden' : 'Send'}
+              </button>
+            </div>
+          </div>
         </div>
 
         <div className="md:col-span-2 border-t border-gray-800 pt-8 mt-8">

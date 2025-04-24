@@ -34,7 +34,7 @@ export default function InteractiveMap({ language }: InteractiveMapProps) {
   const [hoveredBuilding, setHoveredBuilding] = useState<Building | null>(null);
 
   return (
-    <section className="py-16 px-4">
+    <section className="py-16 px-4" id="overview">
       <div className="max-w-7xl mx-auto">
         <h2 className="text-3xl font-bold mb-8 text-center">
           {language === 'de' ? 'Quartiersübersicht' : 'Quarter Overview'}

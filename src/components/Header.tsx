@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Search, Globe, LogIn, Menu, X } from 'lucide-react';
 import { Language, NavItem } from '../types';
 
@@ -19,23 +19,32 @@ export default function Header({ language, setLanguage }: HeaderProps) {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
-    if (href !== '#rental') {
-      const element = document.querySelector(href);
-      if (element) {
-        const headerOffset = 64; // Height of the fixed header
-        const elementPosition = element.getBoundingClientRect().top;
-        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+    const targetId = href === '#overview' ? 'overview' : href.substring(1);
+    const element = document.getElementById(targetId);
+    if (element) {
+      const headerOffset = 64;
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: 'smooth'
-        });
-      }
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
     }
     setIsMobileMenuOpen(false);
+  };
+
+  const handleSearchClick = () => {
+    setIsSearchOpen(!isSearchOpen);
+    if (!isSearchOpen) {
+      setTimeout(() => {
+        searchInputRef.current?.focus();
+      }, 100);
+    }
   };
 
   return (
@@ -67,17 +76,18 @@ export default function Header({ language, setLanguage }: HeaderProps) {
             <div className="relative">
               <div className={`flex items-center transition-all duration-300 ${isSearchOpen ? 'w-64' : 'w-8'}`}>
                 <input
+                  ref={searchInputRef}
                   type="text"
                   className={`${
-                    isSearchOpen ? 'w-full pl-3 pr-10' : 'w-0'
-                  } py-1 transition-all duration-300 border-b border-gray-300 focus:outline-none focus:border-gray-500`}
+                    isSearchOpen ? 'w-full pl-4 pr-10' : 'w-0'
+                  } h-9 transition-all duration-300 rounded-full focus:outline-none focus:ring-2 focus:ring-gray-300 bg-gray-100`}
                   placeholder={language === 'de' ? 'Suchen...' : 'Search...'}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
                 <button
-                  onClick={() => setIsSearchOpen(!isSearchOpen)}
-                  className="p-1 hover:text-gray-600 absolute right-0"
+                  onClick={handleSearchClick}
+                  className="p-1 hover:text-gray-600 absolute right-2"
                 >
                   <Search className="w-5 h-5" />
                 </button>
